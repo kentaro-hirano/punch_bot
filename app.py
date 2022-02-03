@@ -70,8 +70,6 @@ def punch(message):  # money_fowardログイン
             
 app = Flask(__name__)
 
-# YOUR_CHANNEL_ACCESS_TOKEN = "s3SzJskpRt9Lttutm2FVaTqfMsFxQSWkH50JcvK849reNBp8tcN/486CvhrR7ptNpG0n4AAzLfo7O+WZ2lObUk2Q3uSOeqVo7zQfzEoWgQRWgVKno0ZrGrWjFFZjEEuqtvDs32WAHw9WbjGy5+GHgwdB04t89/1O/w1cDnyilFU="
-# YOUR_CHANNEL_SECRET = "acf3987b11018c44b2a1c0f974a0af92"
 
 line_bot_api = LineBotApi(os.environ['YOUR_CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['YOUR_CHANNEL_SECRET'])
