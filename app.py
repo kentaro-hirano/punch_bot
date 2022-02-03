@@ -70,7 +70,6 @@ def punch(message):  # money_fowardログイン
             
 app = Flask(__name__)
 
-
 line_bot_api = LineBotApi(os.environ['YOUR_CHANNEL_ACCESS_TOKEN'])
 handler = WebhookHandler(os.environ['YOUR_CHANNEL_SECRET'])
 
@@ -95,7 +94,6 @@ def callback():
         abort(400)
 
     return 'OK'
-
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
