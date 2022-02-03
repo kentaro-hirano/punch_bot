@@ -1,0 +1,9 @@
+Flask
+line-bot-sdk
+pandas
+gspread
+oauth2client
+selenium==3.141.0
+chromedriver_binary
+webdriver_manager
+python-dotenv
