@@ -16,58 +16,46 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome import service as fs
+from webdriver_manager.chrome import ChromeDriverManager 
 from time import sleep
-
-from webdriver_manager.chrome import ChromeDriverManager
-from time import sleep
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-import chromedriver_binary
 
 # 打刻
 def punch(message):  # money_fowardログイン
-    browser = webdriver.Chrome(executable_path='/app/.chromedriver/bin/chromedriver') 
-    url = "https://attendance.moneyforward.com/my_page"
+    # browser = webdriver.Chrome(executable_path='/app/.chromedriver/bin/chromedriver') 
+    browser = webdriver.Chrome(ChromeDriverManager().install()) 
+    url = "https://ssl.jobcan.jp/login/mb-employee-global?redirect_to=%2Fm%2Fwork%2Faccessrecord%3F_m%3Dadit"
     browser.get(url)   # url取得
     print(url)
 
-    company_id = browser.find_element_by_id("employee_session_form_office_account_name")
+    company_id = browser.find_element_by_id("client_id")
     company_id.send_keys(os.environ['ACCOUNT_ID']) # 会社id入力
+    # company_id.send_keys("seattle") # 会社id入力
 
-    email = browser.find_element_by_id("employee_session_form_account_name_or_email") 
+    email = browser.find_element_by_id("email") 
     email.send_keys(os.environ['EMAIL'])  # email入力
+    # email.send_keys("kentaro.hirano@seattleconsulting.co.jp")  # email入力
 
-    password = browser.find_element_by_id("employee_session_form_password")
+    password = browser.find_element_by_id("password")
     password.send_keys(os.environ['PASSWORD'])  # password入力
+    # password.send_keys("2gf9qELL")  # password入力
 
-    login_btn = browser.find_element_by_class_name("attendance-button-email")
+    login_btn = browser.find_element_by_class_name("btn-block")
     login_btn.click()   # ログインボタン押下
+
     sleep(1)
+
+    stamping_btn = browser.find_element_by_class_name("adit_item")
+    stamping_btn.click()
+
+    browser.implicitly_wait(10) # 秒
+    targetElement = browser.find_element_by_id("yes")
+    targetElement.click():
     
-    attendence_cards = browser.find_elements_by_class_name("attendance-card-time-stamp-button")
     if message == "出勤":
-        punch = attendence_cards[0] # 出勤ボタン取得
-        punch.click()
-        browser.quit()
         return "出勤登録完了しました。\n本日もがんばりましょう！"
     elif message == "退勤":
-        punch = attendence_cards[1] # 退勤ボタン取得
-        punch.click()
-        browser.quit()
         return "退勤登録完了しました。\n今日も1日お疲れ様でした！"
-    elif message == "入り":
-        punch = attendence_cards[2] # 休憩入りボタン取得
-        punch.click()
-        browser.quit()
-        return "休憩登録完了しました。\nしっかり休みましょう！"
-    else:
-        punch = attendence_cards[3] # 休憩戻りボタン取得
-        punch.click()
-        browser.quit()
-        return "休憩戻り登録完了しました。\n　またがんばりましょう！"
-            
+
 app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.environ['YOUR_CHANNEL_ACCESS_TOKEN'])
